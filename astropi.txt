@@ -1,0 +1,71 @@
+# Importar las bibliotecas
+from sense_hat import SenseHat
+from time import sleep
+#from sense_emu import SenseHat
+
+# Configurar el Sense HAT
+sense = SenseHat()
+sense.set_rotation(270)
+
+# Configurar el sensor de color
+sense.color.gain = 60 # Establecer la sensibilidad del sensor
+sense.color.integration_cycles = 64 # El intervalo en el que se tomará la lectura
+
+# Agregar variables de color e imagen
+r = (255,0,0) #rojo
+g = (34, 139, 34) #verde
+
+# Mostrar la imagen
+
+red = [
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r,
+  r, r, r, r, r, r, r, r]
+
+green = [
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g,
+  g, g, g, g, g, g, g, g]
+    
+while True: #registra datos con el sensor de manera continua
+#TEMPERATURA  
+    temp=int(sense.temp)
+    sense.show_message(str(temp))
+    if temp > 24:
+      sense.set_pixels(red) 
+    else: 
+      sense.set_pixels(green)
+    sleep(2)
+
+    #HUMEDAD
+    #si quieres con decimales:    
+    humidity= sense.get_humidity()
+    humidity = round(humidity,2)
+   # humidity=int(sense.humidity) #usar este si no quieres decimales
+    if humidity < 65:
+        bg= [0,100,0]
+    else:
+        bg=[100,0,0]
+    humidity = str(humidity)
+    sense.show_message(humidity, back_colour=bg)
+
+    #PRESIÓN
+    #pres = sense.get_pressure()
+    #pres =round(pres, 2)    
+    pres=int(sense.pressure)
+    if pres > 800:
+        bq = [255,0,0]
+    else:
+        bq = [255, 20, 147]
+    pres = str (pres)
+    sense.show_message(pres, back_colour= bq)    
